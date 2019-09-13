@@ -203,7 +203,7 @@ buffer is not visiting a file."
 (rhol--config-spellchecker)
 
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "firefox-trunk")
+      browse-url-generic-program "firefox")
 
 (savehist-mode 1)
 
@@ -1777,6 +1777,7 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (add-to-list 'org-src-lang-modes '("plantuml" . fundamental))
 
 ;; initialize the shell
+;; (org-babel-shell-initialize)
 
 (message "org-init.org: Appointments")
 ;; Rebuild the reminders everytime the agenda is displayed
@@ -1806,17 +1807,13 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
    :contents-sources
    (list
     (cfw:ical-create-source
-     "CORAL"
-     "https://calendar.google.com/calendar/ical/b6gtfklfi6bcnedq85hmnt8ai8%40group.calendar.google.com/public/basic.ics"
-     "Pink")
-    (cfw:ical-create-source
      "Personal"
-     "https://calendar.google.com/calendar/ical/digidevin%40gmail.com/private-97a186e36320f9ef91d377d83c3a6af3/basic.ics"
+     "https://calendar.google.com/calendar/ical/yifengzhu1129%40gmail.com/private-d59fe0ae9d9b1b5d99af42843cebcc00/basic.ics"
      "White")
     (cfw:ical-create-source
-     "Tommy"
-     "https://calendar.google.com/calendar/ical/1ktrtc3plclrroql88b57j821c%40group.calendar.google.com/public/basic.ics"
-     "Brown")
+     "Courses"
+     "https://calendar.google.com/calendar/ical/a83hfc0bja3k38p5pcemv0long%40group.calendar.google.com/public/basic.ics"
+     "White")    
     (cfw:org-create-source "Yellow"))))
 
 (message "org-init.org: org face customization")
@@ -1829,7 +1826,7 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (require 'org-crypt)
 (org-crypt-use-before-save-magic)
 (setq org-tags-exclude-from-inheritance (quote ("crypt")))
-(setq org-crypt-key "digidevin@gmail.com")
+(setq org-crypt-key "yifengz@gmail.com")
 
 (use-package org-ref
   :config
@@ -1879,21 +1876,21 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
  ;; basic mu4e config
  mu4e-sent-messages-behavior 'delete
  mu4e-maildir "~/mail"
- mu4e-trash-folder "/digidevin/trash"
- mu4e-refile-folder "/digidevin/allmail"
- mu4e-sent-folder "/digidevin/sent"
- mu4e-drafts-folder "/digidevin/drafts"
+ mu4e-trash-folder "/yifengz/trash"
+ mu4e-refile-folder "/yifengz/allmail"
+ mu4e-sent-folder "/yifengz/sent"
+ mu4e-drafts-folder "/yifengz/drafts"
 
  mu4e-view-show-images t
  mu4e-view-show-addresses t
  mu4e-attachment-dir "~/Downloads"
  mu4e-use-fancy-chars t 
 
- user-mail-address "digidevin@gmail.com"
- mu4e-reply-to-address "digidevin@gmail.com"
- user-full-name "Devin Schwab"
+ user-mail-address "yifeng.zhu@utexas.edu"
+ mu4e-reply-to-address "yifeng.zhu@utexas.edu"
+ user-full-name "Yifeng Zhu"
 
- mu4e-compose-siganture (concat "--\n" "Devin\n")
+ mu4e-compose-siganture (concat "--\n" "Yifeng\n")
  mu4e-compose-signature-auto-include nil 
 
  ;; smtp config
@@ -1901,7 +1898,7 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
  starttls-use-gnutls t
  smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
  smtpmail-auth-credentials
- '(("smtp.gmail.com" 587 "digidevin@gmail.com" nil))
+ '(("smtp.gmail.com" 587 "yifengz@gmail.com" nil))
  smtpmail-default-smtp-server "smtp.gmail.com"
  smtpmail-smtp-server "smtp.gmail.com"
  smtpmail-smtp-service 587
@@ -1938,15 +1935,15 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
   (imagemagick-register-types))
 
 (setq mu4e-maildir-shortcuts
-      '(("/digidevin/INBOX" . ?i)
-        ("/digidevin/sent" . ?s)
-        ("/digidevin/drafts" . ?d)
-        ("/digidevin/trash" . ?t)
-        ("/digidevin/allmail" . ?a)))
+      '(("/yifengz/INBOX" . ?i)
+        ("/yifengz/sent" . ?s)
+        ("/yifengz/drafts" . ?d)
+        ("/yifengz/trash" . ?t)
+        ("/yifengz/allmail" . ?a)))
 
 (setq mu4e-get-mail-command "mbsync gmail")
 
-;; (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+(add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
 
 (use-package org-mu4e)
 (setq org-mu4e-convert-to-html t)
@@ -2037,6 +2034,7 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (global-set-key (kbd "<f9> v") 'visible-mode)
 (global-set-key (kbd "<f9> l") 'org-toggle-link-display)
 (global-set-key (kbd "<f9> SPC") 'bh/clock-in-last-task)
+(global-set-key (kbd "<f9> y") 'org-preview-latex-fragment)
 (global-set-key (kbd "C-<f9>") 'previous-buffer)
 (global-set-key (kbd "M-<f9>") 'org-toggle-inline-images)
 (global-set-key (kbd "C-x n r") 'narrow-to-region)
@@ -2045,6 +2043,14 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (global-set-key (kbd "C-<f11>") 'org-clock-in)
 (global-set-key (kbd "C-s-<f12>") 'bh/save-then-publish)
 (global-set-key (kbd "C-c c") 'org-capture)
+
+(defun insert-eq ()
+  (interactive)
+  (insert "\\[ \\]")
+  (backward-char)
+  (backward-char))
+
+(global-set-key (kbd "<f9> e") 'insert-eq)
 
 (global-set-key (kbd "<f9> c") 'rhol/open-calendar)
 
