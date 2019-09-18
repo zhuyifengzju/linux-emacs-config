@@ -294,13 +294,6 @@ current buffer's, reload dir-locals."
   (add-to-list 'custom-safe-themes "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec")
   (load-theme 'darkokai-custom t))
 
-(message "loading emojify")
-(use-package emojify
-  :ensure t
-  :config
-  (emojify-download-emoji-maybe)
-  (add-hook 'after-init-hook #'global-emojify-mode))
-
 (menu-bar-mode -1)
 (toggle-scroll-bar -1)
 (tool-bar-mode -1)
@@ -684,46 +677,6 @@ current buffer's, reload dir-locals."
     (start-process "raise-zathura-wmctrl" zathura-launch-buf "wmctrl" "-a" pdfname)))
 
 (message "org-init.org: Auctex")
-(defun rhol/latex-setup ()
-  (setq TeX-parse-self t)
-  (setq TeX-save-query nil)
-  (setq TeX-PDF-mode t)
-
-  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-
-  (setq reftex-plug-into-AUCTeX t)
-
-  ;; setup the viewer
-  (if (eq system-type 'darwin)
-      (progn
-        (setq TeX-view-program-list '())
-        (setq TeX-view-program-selection '())
-        (add-to-list 'TeX-view-program-list '("skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))
-        (add-to-list 'TeX-view-program-selection '(output-pdf "skim")))
-    (progn
-      (setq TeX-view-program-selection '())
-      (setq TeX-view-program-list '())
-      (add-to-list 'TeX-view-program-list '("zathura-custom" zathura-forward-search))
-      (add-to-list 'TeX-view-program-selection '(output-pdf "zathura-custom"))))
-
-  ;; Shortcut to jump to line in PDF Viewer
-  (add-hook 'LaTeX-mode-hook (lambda () (local-set-key (kbd "<S-s-mouse-1>") #'TeX-view))))
-
-(use-package latex
-  :defer nil
-  :config (rhol/latex-setup))
-
-(message "org-init.org: Latexmk")
-(use-package auctex-latexmk
-             :ensure t
-             :ensure-system-package latexmk
-             :config
-             (auctex-latexmk-setup)
-             (add-hook 'TeX-mode-hook '(lambda ()
-                                         (setq TeX-command-default "LatexMk"))))
-
 (message "org-init.org: Yaml")
 (use-package yaml-mode
   :ensure t
@@ -1448,9 +1401,6 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (add-to-list 'auto-mode-alist '("\\.org_archive$" . org-mode))
 (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
 
-;; Make the latex preview fragments larger
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
-
 (defun rhol/reload-org-buffers ()
   (interactive)
   (mapc #'(lambda (buffer-name)
@@ -1741,7 +1691,6 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
        (emacs-lisp . t)
        (gnuplot . t)
        (haskell . t)
-       (latex . t)
        (ledger . t)
        (octave . t)
        (org . t)
@@ -1753,20 +1702,19 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
        (sqlite . t))
    ;; Emacs 26 babel versions of different
    '((clojure . t)
-       (ditaa . t)
-       (dot . t)
-       (emacs-lisp . t)
-       (gnuplot . t)
-       (haskell . t)
-       (latex . t)
-       (ledger . t)
-       (octave . t)
-       (org . t)
-       (plantuml . t)
-       (python . t)
-       (ruby . t)
-       (sql . t)
-       (sqlite . t))))
+     (ditaa . t)
+     (dot . t)
+     (emacs-lisp . t)
+     (gnuplot . t)
+     (haskell . t)
+     (ledger . t)
+     (octave . t)
+     (org . t)
+     (plantuml . t)
+     (python . t)
+     (ruby . t)
+     (sql . t)
+     (sqlite . t))))
 
 ; Do not prompt to confirm evaluation
 ; This may be dangerous - make sure you understand the consequences
@@ -1794,27 +1742,6 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (run-at-time "24:01" nil 'bh/org-agenda-to-appt)
 
 (run-at-time "00:59" 3600 'org-save-all-org-buffers)
-
-(message "org-init.org: Calfw")
-(use-package calfw-cal)
-(use-package calfw-ical)
-;; (use-package calfw-howm)
-(use-package calfw-org)
-
-(defun rhol/open-calendar ()
-  (interactive)
-  (cfw:open-calendar-buffer
-   :contents-sources
-   (list
-    (cfw:ical-create-source
-     "Personal"
-     "https://calendar.google.com/calendar/ical/yifengzhu1129%40gmail.com/private-d59fe0ae9d9b1b5d99af42843cebcc00/basic.ics"
-     "White")
-    (cfw:ical-create-source
-     "Courses"
-     "https://calendar.google.com/calendar/ical/a83hfc0bja3k38p5pcemv0long%40group.calendar.google.com/public/basic.ics"
-     "White")    
-    (cfw:org-create-source "Yellow"))))
 
 (message "org-init.org: org face customization")
 ;; Color =<text>= as hot pink
@@ -1847,7 +1774,6 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
   (use-package org-ref-pdf)
   (use-package org-ref-url-utils)
   (use-package org-ref-bibtex)
-  (use-package org-ref-latex)
   (use-package org-ref-arxiv)
   (use-package org-ref-isbn)
   (setq biblio-download-directory org-ref-pdf-directory)
@@ -1855,9 +1781,6 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
   (setq helm-bibtex-pdf-open-function 'org-open-file)
   (setq bibtex-completion-additional-search-fields '(tags keywords))
   )
-
-(if (string-equal (system-name) "stryker")
-    (require 'org-mu4e))
 
 (use-package deft
   :config
@@ -1867,94 +1790,8 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 	deft-default-extension "org"
 	deft-use-filter-string-for-filename t))
 
-(message "Loading mu4e")
-
-(use-package mu4e)
-(use-package smtpmail)
-
-(setq
- ;; basic mu4e config
- mu4e-sent-messages-behavior 'delete
- mu4e-maildir "~/mail"
- mu4e-trash-folder "/yifengz/trash"
- mu4e-refile-folder "/yifengz/allmail"
- mu4e-sent-folder "/yifengz/sent"
- mu4e-drafts-folder "/yifengz/drafts"
-
- mu4e-view-show-images t
- mu4e-view-show-addresses t
- mu4e-attachment-dir "~/Downloads"
- mu4e-use-fancy-chars t 
-
- user-mail-address "yifeng.zhu@utexas.edu"
- mu4e-reply-to-address "yifeng.zhu@utexas.edu"
- user-full-name "Yifeng Zhu"
-
- mu4e-compose-siganture (concat "--\n" "Yifeng\n")
- mu4e-compose-signature-auto-include nil 
-
- ;; smtp config
- message-send-mail-function 'smtpmail-send-it
- starttls-use-gnutls t
- smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
- smtpmail-auth-credentials
- '(("smtp.gmail.com" 587 "yifengz@gmail.com" nil))
- smtpmail-default-smtp-server "smtp.gmail.com"
- smtpmail-smtp-server "smtp.gmail.com"
- smtpmail-smtp-service 587
-
- message-kill-buffer-on-exit t
-
- ;; html renderer
- mu4e-html2text-command "w3m -T text/html"
-
- mu4e-update-interval 120
- mu4e-headers-auto-update t
-
- ;; fix uid errors with mbsync
- mu4e-change-filenames-when-moving t
-
- mu4e-headers-draft-mark     '("D" . "⚒")
- mu4e-headers-flagged-mark   '("F" . "✚")
- mu4e-headers-new-mark       '("N" . "✱")
- mu4e-headers-passed-mark    '("P" . "❯")
- mu4e-headers-replied-mark   '("R" . "❮")
- mu4e-headers-seen-mark      '("S" . "✔")
- mu4e-headers-trashed-mark   '("T" . "✀")
- mu4e-headers-attach-mark    '("a" . "⚓")
- mu4e-headers-encrypted-mark '("x" . "⚴")
- mu4e-headers-signed-mark    '("s" . "☡")
- mu4e-headers-unread-mark    '("u" . "🖂")
- mu4e-headers-has-child-prefix    '("+"  . "◼")
- mu4e-headers-empty-parent-prefix '("-"  . "◽")
- mu4e-headers-first-child-prefix  '("\\" . "┗▶")
- mu4e-headers-duplicate-prefix    '("="  . "≡")
- mu4e-headers-default-prefix      '("|"  . "│"))
-
 (when (fboundp 'imagemagick-register-types)
   (imagemagick-register-types))
-
-(setq mu4e-maildir-shortcuts
-      '(("/yifengz/INBOX" . ?i)
-        ("/yifengz/sent" . ?s)
-        ("/yifengz/drafts" . ?d)
-        ("/yifengz/trash" . ?t)
-        ("/yifengz/allmail" . ?a)))
-
-(setq mu4e-get-mail-command "mbsync gmail")
-
-(add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-
-(use-package org-mu4e)
-(setq org-mu4e-convert-to-html t)
-
-(use-package mu4e-alert
-  :ensure t)
-
-
-(mu4e-alert-set-default-style 'libnotify)
-(add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-(add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
 
 (use-package subr-x)
 
@@ -2022,7 +1859,6 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (global-set-key (kbd "<f9> B") (lambda () (interactive) (helm-bibtex (universal-argument))))
 (global-set-key (kbd "<f9> f") 'boxquote-insert-file)
 (global-set-key (kbd "<f9> h") 'bh/hide-other)
-(global-set-key (kbd "<f9> m") 'mu4e)
 (global-set-key (kbd "<f9> n") 'bh/toggle-next-task-display)
 (global-set-key (kbd "<f9> I") 'bh/punch-in)
 (global-set-key (kbd "<f9> O") 'bh/punch-out)
@@ -2034,7 +1870,6 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (global-set-key (kbd "<f9> v") 'visible-mode)
 (global-set-key (kbd "<f9> l") 'org-toggle-link-display)
 (global-set-key (kbd "<f9> SPC") 'bh/clock-in-last-task)
-(global-set-key (kbd "<f9> y") 'org-preview-latex-fragment)
 (global-set-key (kbd "C-<f9>") 'previous-buffer)
 (global-set-key (kbd "M-<f9>") 'org-toggle-inline-images)
 (global-set-key (kbd "C-x n r") 'narrow-to-region)
@@ -2043,17 +1878,6 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (global-set-key (kbd "C-<f11>") 'org-clock-in)
 (global-set-key (kbd "C-s-<f12>") 'bh/save-then-publish)
 (global-set-key (kbd "C-c c") 'org-capture)
-
-(defun insert-eq ()
-  (interactive)
-  (insert "\\[ \\]")
-  (backward-char)
-  (backward-char))
-
-(global-set-key (kbd "<f9> e") 'insert-eq)
-
-(global-set-key (kbd "<f9> c") 'rhol/open-calendar)
-
 (global-set-key (kbd "<f9> w") 'deft)
 
 ;; For some reason org-mode has changed what M-S-<up> etc do
