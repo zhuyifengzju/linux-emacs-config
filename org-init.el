@@ -348,89 +348,89 @@ current buffer's, reload dir-locals."
                ("Magit" (name . "^\\*magit")))))
       (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-switch-to-saved-filter-groups "Default")))))
 
-;; (message "org-init.org: direnv")
-;; (defcustom rhol-use-direnv t
-;;   "Set true to enable direnv parsing."
-;;   :type 'boolean
-;;   :group 'rhol-third-party
-;;   :tag "Use direnv")
+(message "org-init.org: direnv")
+(defcustom rhol-use-direnv t
+  "Set true to enable direnv parsing."
+  :type 'boolean
+  :group 'rhol-third-party
+  :tag "Use direnv")
 
-;; (defun rhol--find-envrc (path)
-;;   "Find path to .envrc.
+(defun rhol--find-envrc (path)
+  "Find path to .envrc.
 
-;;   PATH path to the buffer that you want to find .envrc for."
-;;   (locate-dominating-file path ".envrc"))
+  PATH path to the buffer that you want to find .envrc for."
+  (locate-dominating-file path ".envrc"))
 
-;; (defun rhol--get-bash-direnv-str (envrc-path)
-;;   "Get the direnv environment vars.
+(defun rhol--get-bash-direnv-str (envrc-path)
+  "Get the direnv environment vars.
 
-;;   ENVRC-PATH path to the .envrc to load."
-;;   (message "%s" envrc-path)
-;;   (make-local-variable 'process-environment)
-;;   (shell-command-to-string (format "pushd %s > /dev/null; source .envrc; /usr/bin/env" envrc-path)))
+  ENVRC-PATH path to the .envrc to load."
+  (message "%s" envrc-path)
+  (make-local-variable 'process-environment)
+  (shell-command-to-string (format "pushd %s > /dev/null; source .envrc; /usr/bin/env" envrc-path)))
 
-;; (defun rhol-load-bash-direnv-for-buffer ()
-;;   "Parse environment specified by direnv for a given buffer."
-;;   (interactive)
-;;   (cond
-;;    ;; Special handling of dired mode files
-;;    ((eq 'dired-mode major-mode)
-;;     (let ((envrc-path (rhol--find-envrc (expand-file-name default-directory))))
-;;       (message "%s" envrc-path)
-;;       (if envrc-path
-;;           (let ((env-str (rhol--get-bash-direnv-str envrc-path)))
-;;             (message "%s" env-str)
-;;             (rhol--bash-apply-env-string env-str)))))
-;;    ;; Other files can be handled normally
-;;    (t
-;;     (let ((envrc-path (rhol--find-envrc (buffer-file-name))))
-;;       (if envrc-path
-;;           (let ((env-str (rhol--get-bash-direnv-str envrc-path)))
-;;             ;; (message "%s" env-str)
-;;             (rhol--bash-apply-env-string env-str)))))))
+(defun rhol-load-bash-direnv-for-buffer ()
+  "Parse environment specified by direnv for a given buffer."
+  (interactive)
+  (cond
+   ;; Special handling of dired mode files
+   ((eq 'dired-mode major-mode)
+    (let ((envrc-path (rhol--find-envrc (expand-file-name default-directory))))
+      (message "%s" envrc-path)
+      (if envrc-path
+          (let ((env-str (rhol--get-bash-direnv-str envrc-path)))
+            (message "%s" env-str)
+            (rhol--bash-apply-env-string env-str)))))
+   ;; Other files can be handled normally
+   (t
+    (let ((envrc-path (rhol--find-envrc (buffer-file-name))))
+      (if envrc-path
+          (let ((env-str (rhol--get-bash-direnv-str envrc-path)))
+            ;; (message "%s" env-str)
+            (rhol--bash-apply-env-string env-str)))))))
 
-;; (defun rhol--get-fish-direnv-str (envrc-path)
-;;   "Get the direnv environment vars.
+(defun rhol--get-fish-direnv-str (envrc-path)
+  "Get the direnv environment vars.
 
-;;   ENVRC-PATH path to .envrc to load."
-;;   (message "%s" envrc-path)
-;;   (make-local-variable 'process-environment)
-;;   (shell-command-to-string (format "fish -ilc 'cd %s; and eval (direnv export fish); and set -L'" envrc-path)))
+  ENVRC-PATH path to .envrc to load."
+  (message "%s" envrc-path)
+  (make-local-variable 'process-environment)
+  (shell-command-to-string (format "fish -ilc 'cd %s; and eval (direnv export fish); and set -L'" envrc-path)))
 
-;; (defun rhol-load-fish-direnv-for-buffer ()
-;;   "Parse direnv for given buffer."
-;;   (interactive)
-;;   (cond
-;;    ((eq 'dired-mode major-mode)
-;;     (let ((envrc-path (rhol--find-envrc (expand-file-name default-directory))))
-;;       (message "%s" envrc-path)
-;;       (if envrc-path
-;;           (let ((env-str (rhol--get-fish-direnv-str envrc-path)))
-;;             (rhol--fish-apply-set-string env-str)))))
-;;    (t
-;;     (let ((envrc-path (rhol--find-envrc (buffer-file-name))))
-;;       (if envrc-path
-;;           (let ((env-str (rhol--get-fish-direnv-str envrc-path)))
-;;             (rhol--fish-apply-set-string env-str)))))))
+(defun rhol-load-fish-direnv-for-buffer ()
+  "Parse direnv for given buffer."
+  (interactive)
+  (cond
+   ((eq 'dired-mode major-mode)
+    (let ((envrc-path (rhol--find-envrc (expand-file-name default-directory))))
+      (message "%s" envrc-path)
+      (if envrc-path
+          (let ((env-str (rhol--get-fish-direnv-str envrc-path)))
+            (rhol--fish-apply-set-string env-str)))))
+   (t
+    (let ((envrc-path (rhol--find-envrc (buffer-file-name))))
+      (if envrc-path
+          (let ((env-str (rhol--get-fish-direnv-str envrc-path)))
+            (rhol--fish-apply-set-string env-str)))))))
 
-;; (defun rhol-load-direnv-for-buffer ()
-;;   "Call the appropriate direnv load function for the current shell."
-;;   (interactive)
-;;   (cond
-;;    ((string= "/usr/bin/fish" (getenv "SHELL"))
-;;     (rhol-load-fish-direnv-for-buffer))
-;;    ((string= "/bin/bash" (getenv "SHELL"))
-;;     (rhol-load-bash-direnv-for-buffer))
-;;    (t
-;;     (error "Unknown shell type: %s" (getenv "SHELL")))))
+(defun rhol-load-direnv-for-buffer ()
+  "Call the appropriate direnv load function for the current shell."
+  (interactive)
+  (cond
+   ((string= "/usr/bin/fish" (getenv "SHELL"))
+    (rhol-load-fish-direnv-for-buffer))
+   ((string= "/bin/bash" (getenv "SHELL"))
+    (rhol-load-bash-direnv-for-buffer))
+   (t
+    (error "Unknown shell type: %s" (getenv "SHELL")))))
 
-;; (defun rhol-unload-direnv ()
-;;   "Unload changed env from direnv."
-;;   (interactive)
-;;   (if (local-variable-p 'process-environment)
-;;       (kill-local-variable 'process-environment)))
+(defun rhol-unload-direnv ()
+  "Unload changed env from direnv."
+  (interactive)
+  (if (local-variable-p 'process-environment)
+      (kill-local-variable 'process-environment)))
 
-;; (add-hook 'find-file-hook 'rhol-load-direnv-for-buffer)
+(add-hook 'find-file-hook 'rhol-load-direnv-for-buffer)
 
 (use-package direnv
   :ensure t
@@ -1471,42 +1471,42 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 
 (setq org-refile-target-verify-function 'bh/verify-refile-target)
 
-(use-package org-super-agenda
-  :config (org-super-agenda-mode))
+;; (use-package org-super-agenda
+;;   :config (org-super-agenda-mode))
 
-(defun rhol/org-super-agenda-list ()
-  (interactive)
-  (let ((org-super-agenda-groups
-         '((:order-multi (1 (:name "Done today"
-                                   :and (:regexp "State \"DONE\""
-                                                 :log t))
-                            (:name "Clocked today"
-                                   :log t)))
-           (:name "Schedule"
-                  :time-grid t)
-           (:name "Today"
-                  :scheduled today)
-           (:name "Refile - Super"
-                  :tag "REFILE")
-           (:habit t)
-           (:name "Due today"
-                  :deadline today)
-           (:name "Overdue"
-                  :deadline past)
-           (:name "Due soon"
-                  :deadline future)
-           (:name "Projects - Super"
-                  :children t)
-           (:name "Waiting..."
-                  :todo "WAITING"
-                  :order 98)
-           (:name "On Hold..."
-                  :todo "HOLD"
-                  :order 98)
-           (:name "Scheduled earlier"
-                  :scheduled past)
-           (:auto-group t))))
-    (org-agenda)))
+;; (defun rhol/org-super-agenda-list ()
+;;   (interactive)
+;;   (let ((org-super-agenda-groups
+;;          '((:order-multi (1 (:name "Done today"
+;;                                    :and (:regexp "State \"DONE\""
+;;                                                  :log t))
+;;                             (:name "Clocked today"
+;;                                    :log t)))
+;;            (:name "Schedule"
+;;                   :time-grid t)
+;;            (:name "Today"
+;;                   :scheduled today)
+;;            (:name "Refile - Super"
+;;                   :tag "REFILE")
+;;            (:habit t)
+;;            (:name "Due today"
+;;                   :deadline today)
+;;            (:name "Overdue"
+;;                   :deadline past)
+;;            (:name "Due soon"
+;;                   :deadline future)
+;;            (:name "Projects - Super"
+;;                   :children t)
+;;            (:name "Waiting..."
+;;                   :todo "WAITING"
+;;                   :order 98)
+;;            (:name "On Hold..."
+;;                   :todo "HOLD"
+;;                   :order 98)
+;;            (:name "Scheduled earlier"
+;;                   :scheduled past)
+;;            (:auto-group t))))
+;;     (org-agenda)))
 
 (message "org-init.org: Agenda settings")
 ;; Do not dim blocked tasks
@@ -1697,7 +1697,6 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
        (plantuml . t)
        (python . t)
        (ruby . t)
-       (shell . t)
        (sql . t)
        (sqlite . t))
    ;; Emacs 26 babel versions of different
@@ -1847,6 +1846,8 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
       	    ((string= repo-type "hg")
 	     (monky-status repo-dir))
       	    (t (message "%s is not a git or mercurial repo." filepath))))))
+
+(customize-set-variable 'helm-ff-lynx-style-map t)
 
 (message "org-init.org: org keymap")
 ;; Custom Key Bindings
