@@ -203,7 +203,7 @@ buffer is not visiting a file."
 (rhol--config-spellchecker)
 
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "firefox")
+      browse-url-generic-program "google-chrome")
 
 (savehist-mode 1)
 
@@ -1195,7 +1195,7 @@ DIR: Path to build folder"
       (enlarge-window arg)))
 
   (global-set-key
-   (kbd "C-x w")
+   (kbd "<f1>")
    (defhydra hydra-window ()
      "
 Movement^^        ^Split^         ^Switch^      ^Resize^
@@ -1402,11 +1402,11 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 
 (if rhol-org-directory nil
   (progn (customize-save-variable
-   'rhol-org-directory
-   (expand-file-name (read-directory-name "Org-mode Directory: "
-                                          "~/Dropbox/org-mode"
-                                          nil
-                                          t)))
+	  'rhol-org-directory
+	  (expand-file-name (read-directory-name "Org-mode Directory: "
+						 "~/Dropbox/org-mode"
+						 nil
+						 t)))
          (customize-save-variable 'rhol-org-agenda-files (list rhol-org-directory))))
 
 (defcustom rhol-org-default-notes-file nil
@@ -1826,7 +1826,7 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (require 'org-crypt)
 (org-crypt-use-before-save-magic)
 (setq org-tags-exclude-from-inheritance (quote ("crypt")))
-(setq org-crypt-key "yifengz@gmail.com")
+(setq org-crypt-key "yifeng.zhu@utexas.edu")
 
 (use-package org-ref
   :config
@@ -1898,7 +1898,7 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
  starttls-use-gnutls t
  smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
  smtpmail-auth-credentials
- '(("smtp.gmail.com" 587 "yifengz@gmail.com" nil))
+ '(("smtp.gmail.com" 587 "yifeng.zhu@utexas.edu" nil))
  smtpmail-default-smtp-server "smtp.gmail.com"
  smtpmail-smtp-server "smtp.gmail.com"
  smtpmail-smtp-service 587
@@ -2010,6 +2010,12 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
       	    ((string= repo-type "hg")
 	     (monky-status repo-dir))
       	    (t (message "%s is not a git or mercurial repo." filepath))))))
+
+;; Org reveal
+(require 'ox-reveal)
+(setq org-reveal-root "file:///home/yifeng/slides/reveal.js")
+(setq org-enable-reveal-js-support t)
+
 
 (message "org-init.org: org keymap")
 ;; Custom Key Bindings
