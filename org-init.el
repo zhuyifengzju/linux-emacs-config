@@ -2016,6 +2016,9 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (setq org-reveal-root "file:///home/yifeng/slides/reveal.js")
 (setq org-enable-reveal-js-support t)
 
+;; other custom plugin
+;; loaded function: lookup-wikipedia
+(load "~/.emacs.d/custom-plugin.el")
 
 (message "org-init.org: org keymap")
 ;; Custom Key Bindings
@@ -2049,6 +2052,12 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (global-set-key (kbd "C-<f11>") 'org-clock-in)
 (global-set-key (kbd "C-s-<f12>") 'bh/save-then-publish)
 (global-set-key (kbd "C-c c") 'org-capture)
+
+;; custom plugin keybinding
+(global-set-key (kbd "<f6> w") 'lookup-wikipedia)
+(global-set-key (kbd "<f6> g") 'lookup-google)
+(global-set-key (kbd "<f6> e") 'lookup-etymology)
+(global-set-key (kbd "<f6> d") 'lookup-definition)
 
 (defun insert-eq ()
   (interactive)
