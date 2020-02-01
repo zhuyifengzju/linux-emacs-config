@@ -1,3 +1,5 @@
+
+;; Search words
 (require 'browse-url)
 
 (defun lookup-word-on-internet (&optional @word @url)
@@ -24,6 +26,13 @@
   (lookup-word-on-internet
    @word
    "https://www.google.com/search?q=word02051")
+  )
+
+(defun lookup-scholar-google (&optional @word)
+  (interactive)
+  (lookup-word-on-internet
+   @word
+   "https://scholar.google.com/scholar?q=word02051")
   )
 
 (defun lookup-wikipedia (&optional @word)

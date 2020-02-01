@@ -2065,7 +2065,7 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
   (backward-char)
   (backward-char))
 
-(global-set-key (kbd "<f9> e") 'insert-eq)
+;; (global-set-key (kbd "<f1> e") 'insert-eq)
 
 (global-set-key (kbd "<f9> c") 'rhol/open-calendar)
 
