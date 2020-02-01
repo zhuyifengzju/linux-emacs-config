@@ -2016,6 +2016,10 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (setq org-reveal-root "file:///home/yifeng/slides/reveal.js")
 (setq org-enable-reveal-js-support t)
 
+;; ;; Retrieve bibtex from google scholar
+;; (add-to-list 'load-path "~/.emacs.d/external-pkg/gscholar-bibtex/gscholar-bibtex.el")
+(require 'gscholar-bibtex)
+
 ;; other custom plugin
 ;; loaded function: lookup-wikipedia
 (load "~/.emacs.d/custom-plugin.el")
@@ -2058,7 +2062,9 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (global-set-key (kbd "<f6> g") 'lookup-google)
 (global-set-key (kbd "<f6> e") 'lookup-etymology)
 (global-set-key (kbd "<f6> d") 'lookup-definition)
-
+(global-set-key (kbd "<f6> s") 'lookup-scholar-google)
+;; keybinding for google scholar bibtex
+(global-set-key (kbd "<f6> b") 'gscholar-bibtex)
 (defun insert-eq ()
   (interactive)
   (insert "\\[ \\]")

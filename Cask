@@ -34,6 +34,7 @@
 (depends-on "flycheck")
 (depends-on "flycheck-mypy")
 (depends-on "git-commit")
+(depends-on "gscholar-bibtex")
 (depends-on "helm")
 (depends-on "helm-bibtexkey")
 (depends-on "helm-core")
