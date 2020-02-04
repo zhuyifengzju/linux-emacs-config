@@ -203,7 +203,7 @@ buffer is not visiting a file."
 (rhol--config-spellchecker)
 
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "firefox")
+      browse-url-generic-program "google-chrome")
 
 (savehist-mode 1)
 
@@ -1847,6 +1847,9 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 	     (monky-status repo-dir))
       	    (t (message "%s is not a git or mercurial repo." filepath))))))
 
+;; other custom plugin
+(load "~/.emacs.d/custom-plugin.el")
+
 (customize-set-variable 'helm-ff-lynx-style-map t)
 
 (message "org-init.org: org keymap")
@@ -1881,6 +1884,14 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "<f9> w") 'deft)
 
+;; custom plugin keybinding
+(global-set-key (kbd "<f6> w") 'lookup-wikipedia)
+(global-set-key (kbd "<f6> g") 'lookup-google)
+(global-set-key (kbd "<f6> e") 'lookup-etymology)
+(global-set-key (kbd "<f6> d") 'lookup-definition)
+(global-set-key (kbd "<f6> s") 'lookup-scholar-google)
+;; keybinding for google scholar bibtex
+(global-set-key (kbd "<f6> b") 'gscholar-bibtex)
 ;; For some reason org-mode has changed what M-S-<up> etc do
 
 (message "defining fix-org-keymap")

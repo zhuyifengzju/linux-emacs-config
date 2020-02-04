@@ -32,6 +32,7 @@
 (depends-on "find-file-in-project")
 (depends-on "flycheck")
 (depends-on "flycheck-mypy")
+(depends-on "flymd")
 (depends-on "git-commit")
 (depends-on "helm")
 (depends-on "helm-bibtexkey")
