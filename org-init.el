@@ -678,6 +678,37 @@ current buffer's, reload dir-locals."
 
 (message "org-init.org: Auctex")
 (message "org-init.org: Yaml")
+
+(require 'package)
+(package-initialize)
+
+;; yasnippet code 'optional', before auto-complete
+(require 'yasnippet)
+(yas-global-mode 1)
+
+;; auto-complete setup, sequence is important
+(require 'auto-complete)
+(add-to-list 'ac-modes 'latex-mode) ; beware of using 'LaTeX-mode instead
+(require 'ac-math) ; package should be installed first 
+(defun my-ac-latex-mode () ; add ac-sources for latex
+  (setq ac-sources
+	(append '(ac-source-math-unicode
+		  ac-source-math-latex
+		  ac-source-latex-commands)
+		ac-sources)))
+(add-hook 'LaTeX-mode-hook 'my-ac-latex-mode)
+(setq ac-math-unicode-in-math-p t)
+(ac-flyspell-workaround) ; fixes a known bug of delay due to flyspell (if it is there)
+(add-to-list 'ac-modes 'org-mode) ; auto-complete for org-mode (optional)
+(require 'auto-complete-config) ; should be after add-to-list 'ac-modes and hooks
+(ac-config-default)
+(setq ac-auto-start nil)            ; if t starts ac at startup automatically
+(setq ac-auto-show-menu t)
+(ac-set-trigger-key "TAB")
+(ac-set-trigger-key "<tab>")  
+(global-auto-complete-mode t) 
+
+
 (use-package yaml-mode
   :ensure t
   :mode ("\\.yml$" "\\.yaml$")
@@ -1783,7 +1814,7 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 
 (use-package deft
   :config
-  (setq deft-directory (concat rhol-org-directory "/wiki/")
+  (setq deft-directory (concat rhol-org-directory "wiki/")
 	deft-recursive t
 	deft-extensions '("org" "md")
 	deft-default-extension "org"
