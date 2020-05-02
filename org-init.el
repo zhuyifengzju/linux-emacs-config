@@ -1851,6 +1851,7 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
   (use-package org-ref-arxiv)
   (use-package org-ref-isbn)
   (setq biblio-download-directory org-ref-pdf-directory)
+  ;; (setq org-ref-note-title-format "** %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :AUTHOR: %9a\n  :YEAR: %y\n  :DOI: %D\n  :URL: %U\n :END:\n")
 
   (setq helm-bibtex-pdf-open-function 'org-open-file)
   (setq bibtex-completion-additional-search-fields '(tags keywords))
@@ -2064,7 +2065,44 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 (global-set-key (kbd "<f6> d") 'lookup-definition)
 (global-set-key (kbd "<f6> s") 'lookup-scholar-google)
 ;; keybinding for google scholar bibtex
+
+(defun org-ref-note-title-format-brief (keywords)
+  (interactive "sKeywords: ")
+  (setq org-ref-note-title-format (concat (concat "** %t\n :PROPERTIES:\n  :Custom_ID: %k\n  " (format ":Keywords: %s" keywords)) " \n  :AUTHOR: %9a\n  :YEAR: %y\n  :DOI: %D\n  :URL: %U\n :END:\n\n"))
+  (setq org-ref-create-notes-hook nil)
+  (org-ref-open-bibtex-notes))
+(defun org-ref-note-title-format-todo (keywords)
+  (interactive "sKeywords: ")
+  (setq org-ref-note-title-format (concat (concat "** TODO %t\n :PROPERTIES:\n  :Custom_ID: %k\n  " (format ":Keywords: %s" keywords)) " \n  :AUTHOR: %9a\n  :YEAR: %y\n  :DOI: %D\n  :URL: %U\n :END:\n\n"))
+  (setq org-ref-create-notes-hook nil)  
+  (org-ref-open-bibtex-notes))
+
+(global-set-key (kbd "C-c 0") 'org-ref-note-title-format-brief)
+(global-set-key (kbd "C-c 9") 'org-ref-note-title-format-todo)
+
+(defun select-org-headline ()
+  (interactive)
+  (beginning-of-line)
+  (search-forward " ")
+  (let (p1 p2)
+    (setq p1 (point))
+    (setq p2 (line-end-position))
+    (goto-char p1)
+    (push-mark p2)
+    (setq mark-active t)))
+
+(defun copy-org-headline ()
+  (interactive)
+  (select-org-headline)
+  (copy-region-as-kill (region-beginning) (region-end)))
+
+(setq gscholar-bibtex-database-file "~/workspace/Orgfiles/bibliography/references.bib")
+
+(global-set-key (kbd "<f6> C-SPC") 'select-org-headline)
+(global-set-key (kbd "<f6> M-w") 'copy-org-headline)
+
 (global-set-key (kbd "<f6> b") 'gscholar-bibtex)
+
 (defun insert-eq ()
   (interactive)
   (insert "\\[ \\]")
