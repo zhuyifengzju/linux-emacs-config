@@ -2024,6 +2024,7 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 ;; other custom plugin
 ;; loaded function: lookup-wikipedia
 (load "~/.emacs.d/custom-plugin.el")
+(load "~/.emacs.d/custom-register.el")
 
 (message "org-init.org: org keymap")
 ;; Custom Key Bindings
