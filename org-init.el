@@ -174,33 +174,33 @@ buffer is not visiting a file."
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 (global-set-key (kbd "C-x C-r") 'sudo-edit)
 
-(message "org-init.org: Spellcheck")
+;; (message "org-init.org: Spellcheck")
 
-(defcustom rhol-default-spellchecker "hunspell"
-  "Executable name for default spellchecker."
-  :type '(choice (string :tag "hunspell" :value "hunspell")
-                 (string :tag "aspell" :value "aspell")
-                 (string :tag "Custom"))
-  :group 'rhol-general
-  :tag "Default spellchecker")
+;; (defcustom rhol-default-spellchecker "hunspell"
+;;   "Executable name for default spellchecker."
+;;   :type '(choice (string :tag "hunspell" :value "hunspell")
+;;                  (string :tag "aspell" :value "aspell")
+;;                  (string :tag "Custom"))
+;;   :group 'rhol-general
+;;   :tag "Default spellchecker")
 
-(defcustom rhol-default-spellchecker-args '("-d en_US")
-  "List of extra args to provide to spellchecker."
-  :type 'list
-  :group 'rhol-general
-  :tag "Default spellchecker args")
+;; (defcustom rhol-default-spellchecker-args '("-d en_US")
+;;   "List of extra args to provide to spellchecker."
+;;   :type 'list
+;;   :group 'rhol-general
+;;   :tag "Default spellchecker args")
 
-(defun rhol--config-spellchecker ()
-  "Configure spellchecker using saved config."
-  (if (executable-find rhol-default-spellchecker)
-      (progn
-        (setq ispell-program-name rhol-default-spellchecker)
-        (setq ispell-extra-args rhol-default-spellchecker-args)
-        (if (string= "aspell" rhol-default-spellchecker)
-            (setq ispell-list-command "--list")))
-    (user-error "Default spellchecker %s not found" rhol-default-spellchecker)))
+;; (defun rhol--config-spellchecker ()
+;;   "Configure spellchecker using saved config."
+;;   (if (executable-find rhol-default-spellchecker)
+;;       (progn
+;;         (setq ispell-program-name rhol-default-spellchecker)
+;;         (setq ispell-extra-args rhol-default-spellchecker-args)
+;;         (if (string= "aspell" rhol-default-spellchecker)
+;;             (setq ispell-list-command "--list")))
+;;     (user-error "Default spellchecker %s not found" rhol-default-spellchecker)))
 
-(rhol--config-spellchecker)
+;; (rhol--config-spellchecker)
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "firefox")
@@ -1878,6 +1878,11 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 	     (monky-status repo-dir))
       	    (t (message "%s is not a git or mercurial repo." filepath))))))
 
+;; Load PDDL mode
+(load "~/.emacs.d/pddl-mode.el")
+(add-to-list 'auto-mode-alist '("\\.pddl$" . PDDL-mode))
+
+
 (customize-set-variable 'helm-ff-lynx-style-map t)
 
 (message "org-init.org: org keymap")
@@ -1888,6 +1893,7 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
 ;; (global-set-key (kbd "<f8>") 'org-cycle-agenda-files)
 (global-set-key (kbd "<f9> <f9>") 'bh/show-org-agenda)
 (global-set-key (kbd "<f9> b") 'helm-bibtex)
+(global-set-key (kbd "<f9> M-b") 'helm-bibtex-with-local-bibliography)
 (global-set-key (kbd "<f9> B") (lambda () (interactive) (helm-bibtex (universal-argument))))
 (global-set-key (kbd "<f9> f") 'boxquote-insert-file)
 (global-set-key (kbd "<f9> h") 'bh/hide-other)

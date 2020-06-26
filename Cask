@@ -4,6 +4,7 @@
 (source melpa)
 (source org)
 
+(depends-on "2048-game")
 (depends-on "ac-math")
 (depends-on "ace-window")
 (depends-on "aggressive-indent")
@@ -35,6 +36,7 @@
 (depends-on "flycheck")
 (depends-on "flycheck-mypy")
 (depends-on "git-commit")
+(depends-on "gscholar-bibtex")
 (depends-on "helm")
 (depends-on "helm-bibtexkey")
 (depends-on "helm-core")
@@ -52,6 +54,7 @@
 (depends-on "magit")
 (depends-on "magit-popup")
 (depends-on "markdown-mode")
+(depends-on "markdown-preview-mode")
 (depends-on "monky")
 (depends-on "mu4e-alert")
 (depends-on "mu4e-jump-to-list")
